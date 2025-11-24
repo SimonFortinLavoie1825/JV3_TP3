@@ -1,62 +1,86 @@
 using System.Collections;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TankControls : MonoBehaviour
 {
-    [SerializeField] private Transform[] poweredWheels;
+    [SerializeField] private WheelCollider[] poweredWheels;
+    [SerializeField] private WheelCollider[] steerWheels;
     [SerializeField] private float brakePower = 100;
     [SerializeField] private float speed = 50;
     [SerializeField] private float maxSpeed = 50;
-    [SerializeField] private float tireGripFactor = 1;
     [SerializeField] private float brakeFactor = 5000;
+    [SerializeField] private float steerAngle = 15;
+    [SerializeField] private float jumpForce = 5;
 
     private Rigidbody rb;
-    private GroundedManager groundManager;
 
     private InputAction moveAction;
     private Vector2 moveValue;
 
+    private InputAction jumpAction;
+    private float jumpValue;
+
     private float currentSpeed;
+
+    private float baseSuspensionDistance;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = Vector3.zero;
-        groundManager = GetComponent<GroundedManager>();
-        moveAction = InputSystem.actions.FindAction("Move"); 
+        moveAction = InputSystem.actions.FindAction("Move");
+        jumpAction = InputSystem.actions.FindAction("Jump");
+
+        baseSuspensionDistance = poweredWheels[0].suspensionDistance;
     }
 
     private void FixedUpdate()
     {
         moveValue = moveAction.ReadValue<Vector2>();
+        jumpValue = jumpAction.ReadValue<float>();
 
         currentSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
 
-        if (moveValue.magnitude != 0)
+        Accelerate();
+        Steer();
+
+        foreach (WheelCollider wheel in poweredWheels)
         {
-            accelerate();
+            if (jumpValue == 1)
+            {
+                wheel.suspensionDistance = baseSuspensionDistance * jumpForce;
+            }
+            else
+            {
+                wheel.suspensionDistance = baseSuspensionDistance;
+            }
         }
     }
 
-    private void accelerate()
+    private void Accelerate()
     {
-        foreach (Transform wheel in poweredWheels)
+        foreach (WheelCollider wheel in poweredWheels)
         {
-            rb.AddForceAtPosition(transform.forward * moveValue.y * speed, wheel.position);
+            wheel.motorTorque = CalculateSpeed();
         }
     }
 
-    private void slowDown(IEnumerable affectedWheels)
+    private void Steer()
     {
-        foreach (Transform wheel in affectedWheels)
+        foreach (WheelCollider wheel in steerWheels)
         {
-            Vector3 wheelWorldVelocity = rb.GetPointVelocity(wheel.position);
-            float wheelVelocity = Vector3.Dot(wheel.forward, wheelWorldVelocity);
-
-            rb.AddForceAtPosition(-wheel.forward * Mathf.Sign(wheelVelocity) * tireGripFactor * brakeFactor, wheel.position);
-            Debug.DrawLine(wheel.position, wheel.position + (-wheel.forward * Mathf.Sign(wheelVelocity) * tireGripFactor * brakeFactor / 5000), Color.yellow);
+            wheel.steerAngle = moveValue.x * steerAngle;
         }
+    } 
+
+    private float CalculateSpeed()
+    {
+        float percentToMaxSpeed = currentSpeed / maxSpeed;
+        Debug.Log(currentSpeed / maxSpeed);
+
+        return speed * moveValue.y * (1 - percentToMaxSpeed);
     }
 }
