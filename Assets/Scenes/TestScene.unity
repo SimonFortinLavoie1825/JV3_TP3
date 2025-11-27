@@ -330,6 +330,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1658973967 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9216219495611752285, guid: c202de6294e965740bd958188a36a733, type: 3}
+  m_PrefabInstance: {fileID: 6796882281542235295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1958997510
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +615,11 @@ MonoBehaviour:
       Wait: 1
       Time: 2
     Restrictions: 0
+--- !u!4 &2028919218 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8189943952480184840, guid: c202de6294e965740bd958188a36a733, type: 3}
+  m_PrefabInstance: {fileID: 6796882281542235295}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6796882281542235295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -662,6 +672,18 @@ PrefabInstance:
       propertyPath: cameraLook
       value: 
       objectReference: {fileID: 1958997516}
+    - target: {fileID: 3500011186157157612, guid: c202de6294e965740bd958188a36a733, type: 3}
+      propertyPath: suspensionExtendAmount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3500011186157157612, guid: c202de6294e965740bd958188a36a733, type: 3}
+      propertyPath: 'suspensionPivots.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1658973967}
+    - target: {fileID: 3500011186157157612, guid: c202de6294e965740bd958188a36a733, type: 3}
+      propertyPath: 'suspensionPivots.Array.data[3]'
+      value: 
+      objectReference: {fileID: 2028919218}
     - target: {fileID: 8399098183890657459, guid: c202de6294e965740bd958188a36a733, type: 3}
       propertyPath: m_Name
       value: TankFree_Green

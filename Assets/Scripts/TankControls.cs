@@ -8,12 +8,15 @@ public class TankControls : MonoBehaviour
 {
     [SerializeField] private WheelCollider[] poweredWheels;
     [SerializeField] private WheelCollider[] steerWheels;
+    [SerializeField] private WheelVisualAnimator wheelAnimator;
     [SerializeField] private float brakePower = 100;
     [SerializeField] private float speed = 50;
     [SerializeField] private float maxSpeed = 50;
     [SerializeField] private float brakeFactor = 5000;
     [SerializeField] private float steerAngle = 15;
     [SerializeField] private float jumpForce = 5;
+    [SerializeField] private float steerSpeed = 5;
+
 
     private Rigidbody rb;
 
@@ -47,6 +50,8 @@ public class TankControls : MonoBehaviour
         Accelerate();
         Steer();
 
+        wheelAnimator.SetSuspensionExtended(jumpValue == 1);
+
         foreach (WheelCollider wheel in poweredWheels)
         {
             if (jumpValue == 1)
@@ -60,6 +65,7 @@ public class TankControls : MonoBehaviour
         }
     }
 
+
     private void Accelerate()
     {
         foreach (WheelCollider wheel in poweredWheels)
@@ -70,11 +76,23 @@ public class TankControls : MonoBehaviour
 
     private void Steer()
     {
+        float targetAngle = moveValue.x * steerAngle;
+
+        float smoothedAngle = Mathf.Lerp(
+            wheelAnimator.currentSteerAngle,
+            targetAngle,
+            steerSpeed * Time.fixedDeltaTime
+        );
+
         foreach (WheelCollider wheel in steerWheels)
         {
-            wheel.steerAngle = moveValue.x * steerAngle;
+            wheel.steerAngle = smoothedAngle;
         }
-    } 
+
+        wheelAnimator.currentSteerAngle = smoothedAngle;
+    }
+
+
 
     private float CalculateSpeed()
     {
