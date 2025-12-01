@@ -7,13 +7,18 @@ public class TankControls : MonoBehaviour
 {
     [SerializeField] private TankWheel[] tankWheels;
     [SerializeField] private Transform[] wheelMesh;
+    [SerializeField] private WheelCollider[] poweredWheels;
+    [SerializeField] private WheelCollider[] steerWheels;
+    [SerializeField] private WheelVisualAnimator wheelAnimator;
     [SerializeField] private float brakePower = 100;
     [SerializeField] private float speed = 50;
     [SerializeField] private float maxSpeed = 50;
     [SerializeField] private float steerAngle = 15;
     [SerializeField] private float jumpForce = 5;
+    [SerializeField] private float steerSpeed = 5;
 
     private Dictionary<TankWheel, WheelCollider> tankWheelsDict;
+
     private Rigidbody rb;
 
     private InputAction moveAction;
@@ -64,6 +69,8 @@ public class TankControls : MonoBehaviour
         
         foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
         {
+            wheelAnimator.SetSuspensionExtended(jumpValue == 1);
+
             WheelCollider wheel = kwp.Value;
 
             if (jumpValue == 1)
@@ -115,12 +122,21 @@ public class TankControls : MonoBehaviour
 
     private void Steer()
     {
-        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
-        {
+        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict) { 
+        float targetAngle = moveValue.x * steerAngle;
+
+        float smoothedAngle = Mathf.Lerp(
+            wheelAnimator.currentSteerAngle,
+            targetAngle,
+            steerSpeed * Time.fixedDeltaTime
+        );
+
             WheelCollider wheelCollider = kwp.Value;
             TankWheel wheel = kwp.Key;
 
             wheelCollider.steerAngle = Mathf.MoveTowards(wheelCollider.steerAngle, moveValue.x * steerAngle * wheel.getSteerMult(), 10);
+            wheelCollider.steerAngle = smoothedAngle;
+            wheelAnimator.currentSteerAngle = smoothedAngle;
         }
     }
 
@@ -139,6 +155,5 @@ public class TankControls : MonoBehaviour
             int index = Array.IndexOf(new List<WheelCollider>(tankWheelsDict.Values).ToArray(), wheel);
             wheelMesh[index].SetPositionAndRotation(pos, quat);
         }
-
     }
 }
