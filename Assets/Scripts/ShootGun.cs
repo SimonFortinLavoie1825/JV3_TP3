@@ -5,12 +5,13 @@ using UnityEngine.InputSystem;
 public class ShootGun : MonoBehaviour
 {
     [SerializeField] private GameObject bullet;
-    [SerializeField] private Transform barrelPosition;
     [SerializeField] private float recoil = 50f;
     [SerializeField] private float reloadTime = 2.5f;
     [SerializeField] private GameObject[] gunParticlePrefabs;
 
-    private GameObject[] bulletList;
+    private Transform barrelPosition;
+
+    private Bullet[] bulletList;
     private Rigidbody rb;
     private int bulletListSize = 10;
     private float currentReload;
@@ -22,15 +23,18 @@ public class ShootGun : MonoBehaviour
     void Start()
     {
         currentReload = reloadTime;
+
+        barrelPosition = GameObject.Find("Barrel").transform;
+
         rb = GetComponent<Rigidbody>();
         shootAction = InputSystem.actions.FindAction("Shoot");
 
-        bulletList = new GameObject[bulletListSize];
+        bulletList = new Bullet[bulletListSize];
         for (int i = 0; i < bulletListSize; i++)
         {
             GameObject newBullet = Instantiate(bullet);
             newBullet.SetActive(false);
-            bulletList[i] = newBullet;
+            bulletList[i] = newBullet.GetComponent<Bullet>();
         }
     }
 
@@ -49,9 +53,9 @@ public class ShootGun : MonoBehaviour
 
             //Get bullet from pool
 
-            GameObject newBullet = getAvailableBullet();
+            Bullet newBullet = getAvailableBullet();
             //Shoot it
-            newBullet.GetComponent<Bullet>().ShootBullet();
+            newBullet.ShootBullet();
 
             // Instantiate and play each particle effect, then destroy after it finishes
             foreach (GameObject particlePrefab in gunParticlePrefabs)
@@ -70,18 +74,18 @@ public class ShootGun : MonoBehaviour
             }
 
             //Move tank back
-            rb.AddForceAtPosition(-newBullet.transform.forward * recoil, barrelPosition.position);
+            rb.AddForce(-newBullet.transform.forward * recoil);
         }
     }
 
-    private GameObject getAvailableBullet()
+    private Bullet getAvailableBullet()
     {
         for (int i = 0; i < bulletListSize; i++)
         {
-            if (!bulletList[i].activeInHierarchy)
+            if (!bulletList[i].gameObject.activeInHierarchy)
             {
-                bulletList[i].SetActive(true);
-                bulletList[i].GetComponent<Bullet>().ResetBullet(barrelPosition, rb.linearVelocity);
+                bulletList[i].gameObject.SetActive(true);
+                bulletList[i].ResetBullet(barrelPosition, rb.linearVelocity);
                 return bulletList[i];
             }
         }

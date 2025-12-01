@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Linq;
-using Unity.VisualScripting;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class TankControls : MonoBehaviour
 {
-    [SerializeField] private WheelCollider[] poweredWheels;
-    [SerializeField] private WheelCollider[] steerWheels;
+    [SerializeField] private TankWheel[] tankWheels;
+    [SerializeField] private Transform[] wheelMesh;
     [SerializeField] private float brakePower = 100;
     [SerializeField] private float speed = 50;
     [SerializeField] private float maxSpeed = 50;
-    [SerializeField] private float brakeFactor = 5000;
     [SerializeField] private float steerAngle = 15;
     [SerializeField] private float jumpForce = 5;
 
+    private Dictionary<TankWheel, WheelCollider> tankWheelsDict;
     private Rigidbody rb;
 
     private InputAction moveAction;
@@ -30,11 +29,20 @@ public class TankControls : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.centerOfMass = Vector3.zero;
+        rb.centerOfMass = Vector3.down;
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
 
-        baseSuspensionDistance = poweredWheels[0].suspensionDistance;
+        tankWheelsDict = new Dictionary<TankWheel, WheelCollider>();
+        foreach (TankWheel wheel in tankWheels)
+        {
+            WheelCollider wc = wheel.GetComponent<WheelCollider>();
+            tankWheelsDict.Add(wheel, wc);
+        }
+
+
+        tankWheelsDict.TryGetValue(tankWheels[0], out WheelCollider baseWheel);
+        baseSuspensionDistance = baseWheel.suspensionDistance;
     }
 
     private void FixedUpdate()
@@ -44,11 +52,20 @@ public class TankControls : MonoBehaviour
 
         currentSpeed = Vector3.Dot(rb.linearVelocity, transform.forward);
 
-        Accelerate();
+        if (moveValue.y != 0)
+        {
+            Move();
+        } else
+        {
+            SlowDown();
+        }
         Steer();
 
-        foreach (WheelCollider wheel in poweredWheels)
+        
+        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
         {
+            WheelCollider wheel = kwp.Value;
+
             if (jumpValue == 1)
             {
                 wheel.suspensionDistance = baseSuspensionDistance * jumpForce;
@@ -57,30 +74,71 @@ public class TankControls : MonoBehaviour
             {
                 wheel.suspensionDistance = baseSuspensionDistance;
             }
+
+            ChangeWheelPosition();
+        }
+        
+    }
+
+    private void SlowDown()
+    {
+        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+        {
+            WheelCollider wheel = kwp.Value;
+            wheel.motorTorque = 0;
+            wheel.brakeTorque = brakePower / 2.5f;
         }
     }
 
-    private void Accelerate()
+    private void Move()
     {
-        foreach (WheelCollider wheel in poweredWheels)
+        if (Mathf.Sign(currentSpeed) == Mathf.Sign(moveValue.y))
         {
-            wheel.motorTorque = CalculateSpeed();
+            foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+            {
+                WheelCollider wheel = kwp.Value;
+
+                wheel.brakeTorque = 0;
+                wheel.motorTorque = CalculateSpeed();
+            }
+        } else
+        {
+            foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+            {
+                WheelCollider wheel = kwp.Value;
+                wheel.motorTorque = 0;
+                wheel.brakeTorque = brakePower;
+            }
         }
+        
     }
 
     private void Steer()
     {
-        foreach (WheelCollider wheel in steerWheels)
+        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
         {
-            wheel.steerAngle = moveValue.x * steerAngle;
+            WheelCollider wheelCollider = kwp.Value;
+            TankWheel wheel = kwp.Key;
+
+            wheelCollider.steerAngle = Mathf.MoveTowards(wheelCollider.steerAngle, moveValue.x * steerAngle * wheel.getSteerMult(), 10);
         }
-    } 
+    }
 
     private float CalculateSpeed()
     {
         float percentToMaxSpeed = currentSpeed / maxSpeed;
-        Debug.Log(currentSpeed / maxSpeed);
 
         return speed * moveValue.y * (1 - percentToMaxSpeed);
+    }
+
+    private void ChangeWheelPosition()
+    {
+        foreach(WheelCollider wheel in tankWheelsDict.Values)
+        {
+            wheel.GetWorldPose(out Vector3 pos, out Quaternion quat);
+            int index = Array.IndexOf(new List<WheelCollider>(tankWheelsDict.Values).ToArray(), wheel);
+            wheelMesh[index].SetPositionAndRotation(pos, quat);
+        }
+
     }
 }

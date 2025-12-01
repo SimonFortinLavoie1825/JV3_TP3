@@ -4,14 +4,14 @@ using UnityEngine.UI;
 
 public class TurnTurret : MonoBehaviour
 {
-    [SerializeField] private float sensivity;
     [SerializeField] private float turretRotationSpeed;
     [SerializeField] private float gunElevationSpeed;
     [SerializeField] private float gunDepression;
     [SerializeField] private float gunElevation;
-    [SerializeField] private Transform targetRotation;
-    [SerializeField] private Transform turret;
     [SerializeField] private Transform cameraLook;
+
+    private Transform targetRotation;
+    private Transform turret;
 
     private Transform barrel;
 
@@ -21,6 +21,8 @@ public class TurnTurret : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        targetRotation = GameObject.Find("TargetRotation").transform;
+        turret = GameObject.Find("Turret").transform;
         barrel = turret.GetChild(0);
         ignoreMask = LayerMask.GetMask("Player");
 
@@ -47,7 +49,7 @@ public class TurnTurret : MonoBehaviour
         //Use a -180 to 180 range instead of 0 to 360
         if (newX > 180) newX -= 360;
 
-        //Unity reverses the angles so we need to invert the value for it to be accurate (Because it makes sense, right?)
+        //Unity reverses the angles so we need to invert the value for it to be accurate (Idk why it works like that ngl)
         newX = Mathf.Clamp(newX, -gunElevation, gunDepression);
 
         turret.localEulerAngles = new Vector3(turret.localEulerAngles.x, newY, turret.localEulerAngles.z);

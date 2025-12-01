@@ -5,9 +5,8 @@ using UnityEngine.InputSystem.HID;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] private float lifeTime = 5f;
-    [SerializeField] private float penetration = 239f;
-    [SerializeField] private float bulletVelocity = 887f;
+    [SerializeField] private float lifeTime = 10f;
+    [SerializeField] private float bulletVelocity = 200f;
     [SerializeField] private GameObject[] hitParticle;
 
     private TrailRenderer trail;
@@ -18,14 +17,12 @@ public class Bullet : MonoBehaviour
     private Rigidbody rb;
 
     private float currentLife = 0f;
-    private float currentPenetration;
     private LayerMask ignoreMask;
 
     void Awake()
     {
         trail = GetComponent<TrailRenderer>();
         rb = GetComponent<Rigidbody>();
-        currentPenetration = penetration;
         ignoreMask = ~LayerMask.GetMask("Player", "Bullet");
     }
 
@@ -46,8 +43,6 @@ public class Bullet : MonoBehaviour
         }
 
         lastFramePosition = transform.position;
-
-        currentPenetration = penetration * (rb.linearVelocity.magnitude / bulletVelocity);
     }
 
     void OnHit()
@@ -74,7 +69,6 @@ public class Bullet : MonoBehaviour
         rb.linearVelocity = newVelocity;
         transform.SetPositionAndRotation(newTransform.transform.position, newTransform.transform.rotation);
         lastFramePosition = newTransform.transform.position;
-        currentPenetration = penetration;
     }
 
     private float CalculateCollisionAngle(Vector3 velocity, Vector3 normal)
