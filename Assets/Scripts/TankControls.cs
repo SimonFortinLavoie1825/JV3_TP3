@@ -122,7 +122,7 @@ public class TankControls : MonoBehaviour
 
     private float CalculateSpeed()
     {
-        float percentToMaxSpeed = currentSpeed / maxSpeed;
+        float percentToMaxSpeed = Mathf.Abs(currentSpeed) / maxSpeed;
 
         return speed * moveValue.y * (1 - percentToMaxSpeed);
     }

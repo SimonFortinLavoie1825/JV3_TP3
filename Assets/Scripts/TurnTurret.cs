@@ -8,7 +8,8 @@ public class TurnTurret : MonoBehaviour
     [SerializeField] private float gunElevationSpeed;
     [SerializeField] private float gunDepression;
     [SerializeField] private float gunElevation;
-    [SerializeField] private Transform cameraLook;
+
+    private Camera cameraLook;
 
     private Transform targetRotation;
     private Transform turret;
@@ -25,7 +26,8 @@ public class TurnTurret : MonoBehaviour
         turret = GameObject.Find("Turret").transform;
         barrel = turret.GetChild(0);
         ignoreMask = LayerMask.GetMask("Player");
-
+        cameraLook = Camera.main;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -33,12 +35,12 @@ public class TurnTurret : MonoBehaviour
     {
         float newY = turret.localEulerAngles.y;
         float newX = barrel.localEulerAngles.x;
-        Physics.Raycast(cameraLook.position + Vector3.up * 5, cameraLook.forward, out cameraLookPoint, 1000, ~ignoreMask);
+        Physics.Raycast(cameraLook.transform.position + Vector3.up * 5, cameraLook.transform.forward, out cameraLookPoint, 1000, ~ignoreMask);
         Vector3 lookPoint = cameraLookPoint.point;
 
         if (cameraLookPoint.distance == 0 || cameraLookPoint.distance >= 100)
         {
-            lookPoint = cameraLook.position + cameraLook.TransformDirection(Vector3.forward) * 100;
+            lookPoint = cameraLook.transform.position + cameraLook.transform.TransformDirection(Vector3.forward) * 100;
         }
 
         targetRotation.LookAt(lookPoint);
