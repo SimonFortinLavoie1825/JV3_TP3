@@ -31,9 +31,22 @@ public class WheelVisualAnimator : MonoBehaviour
             WheelCollider wheelCollider = kwp.Value;
             Transform wheelMesh = kwp.Key;
 
-            wheelCollider.GetWorldPose(out Vector3 pos, out Quaternion quat);
+            wheelCollider.GetWorldPose(out Vector3 targetPos, out Quaternion targetQuat);
 
-            wheelMesh.SetPositionAndRotation(pos, quat);
+            float lerpSpeed = 15f;
+
+            wheelMesh.position = Vector3.Lerp(
+                wheelMesh.position,
+                targetPos,
+                Time.deltaTime * lerpSpeed
+            );
+
+            wheelMesh.rotation = Quaternion.Slerp(
+                wheelMesh.rotation,
+                targetQuat,
+                Time.deltaTime * lerpSpeed
+            );
         }
     }
+
 }
