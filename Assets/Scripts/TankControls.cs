@@ -89,7 +89,7 @@ public class TankControls : MonoBehaviour
 
     private void Move()
     {
-        if (Mathf.Sign(currentSpeed) == Mathf.Sign(moveValue.y))
+        if (Mathf.Sign(currentSpeed) == Mathf.Sign(moveValue.y) || (-1 < currentSpeed && currentSpeed < 1))
         {
             foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
             {
@@ -107,7 +107,6 @@ public class TankControls : MonoBehaviour
                 wheel.brakeTorque = brakePower;
             }
         }
-        
     }
 
     private void Steer()

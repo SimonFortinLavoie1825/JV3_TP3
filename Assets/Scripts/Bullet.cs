@@ -47,7 +47,6 @@ public class Bullet : MonoBehaviour
 
     void OnHit()
     {
-        Debug.Log("Bullet, TARRRGET HIT: " + betweenFrameHitInfo.collider.name);
         float angle = CalculateCollisionAngle(rb.linearVelocity, betweenFrameHitInfo.normal);
 
         // Instantiate and play the hit particle effect
@@ -78,6 +77,7 @@ public class Bullet : MonoBehaviour
         return Vector3.Angle(vNorm, -nNorm);
     }
 
+    // TODO: switch to a particle pool
     private void SpawnParticles()
     {
         foreach (GameObject particle in hitParticle)

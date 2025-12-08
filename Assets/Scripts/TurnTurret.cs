@@ -35,13 +35,17 @@ public class TurnTurret : MonoBehaviour
     {
         float newY = turret.localEulerAngles.y;
         float newX = barrel.localEulerAngles.x;
-        Physics.Raycast(cameraLook.transform.position + Vector3.up * 5, cameraLook.transform.forward, out cameraLookPoint, 1000, ~ignoreMask);
-        Vector3 lookPoint = cameraLookPoint.point;
 
+        //Physics.Raycast(cameraLook.transform.position + Vector3.up * 5, cameraLook.transform.forward, out cameraLookPoint, 1000, ~ignoreMask);
+        //Vector3 lookPoint = cameraLookPoint.point;
+        Vector3 lookPoint = cameraLook.transform.position + cameraLook.transform.TransformDirection(Vector3.forward) * 100;
+
+        /*
         if (cameraLookPoint.distance == 0 || cameraLookPoint.distance >= 100)
         {
             lookPoint = cameraLook.transform.position + cameraLook.transform.TransformDirection(Vector3.forward) * 100;
         }
+        */
 
         targetRotation.LookAt(lookPoint);
 
