@@ -17,9 +17,6 @@ public class TankManager : MonoBehaviour
     [SerializeField] private Transform spawnGreen;
     [SerializeField] private Transform spawnYellow;
 
-    [Header("Reset Point")]
-    [SerializeField] private Transform resetPlatform;
-
     [Header("Materials")]
     public Material tankMatBlue;
     public Material tankMatGreen;
@@ -89,8 +86,6 @@ public class TankManager : MonoBehaviour
         SetTankScriptsEnabled(yellowTank, false);
 
         yellowActive = false;
-
-        SpawnTankSafely(greenTank, resetPlatform);
 
         ApplyMaterialToTank(greenTank, tankMatGreen);
         SetTankScriptsEnabled(greenTank, true);

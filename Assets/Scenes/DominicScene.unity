@@ -950,11 +950,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8462150288627673113, guid: 760bdb18d27c4d04ca85ddf9b6fe9eb2, type: 3}
   m_PrefabInstance: {fileID: 2116052660}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &406536405 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1548331881400935733, guid: 760bdb18d27c4d04ca85ddf9b6fe9eb2, type: 3}
-  m_PrefabInstance: {fileID: 2116052660}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &406536410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -970,8 +965,8 @@ MonoBehaviour:
   onHit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 701589150}
-        m_TargetAssemblyTypeName: PlatformMover, Assembly-CSharp
+      - m_Target: {fileID: 701589155}
+        m_TargetAssemblyTypeName: MoveWall, Assembly-CSharp
         m_MethodName: Activate
         m_Mode: 1
         m_Arguments:
@@ -1012,7 +1007,6 @@ MonoBehaviour:
   yellowTank: {fileID: 189000453}
   spawnGreen: {fileID: 518452962}
   spawnYellow: {fileID: 1748993610}
-  resetPlatform: {fileID: 2120936983}
   tankMatBlue: {fileID: 2100000, guid: 4577ee2046668dc4faae41439ead563c, type: 2}
   tankMatGreen: {fileID: 2100000, guid: 36797ffef13d2934b9df4b1eee1d60ad, type: 2}
 --- !u!1001 &413965158
@@ -1521,19 +1515,14 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 141412420303934486, guid: 1d0b6ac3d0c6e784487b45fd23f12145, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 701589150}
+      addedObject: {fileID: 701589155}
   m_SourcePrefab: {fileID: 100100000, guid: 1d0b6ac3d0c6e784487b45fd23f12145, type: 3}
 --- !u!1 &701589143 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 141412420303934486, guid: 1d0b6ac3d0c6e784487b45fd23f12145, type: 3}
   m_PrefabInstance: {fileID: 701589142}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &701589149 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 773974222102531756, guid: 1d0b6ac3d0c6e784487b45fd23f12145, type: 3}
-  m_PrefabInstance: {fileID: 701589142}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &701589150
+--- !u!114 &701589155
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1542,12 +1531,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 701589143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebab1ac9a10bea541834ac82dfd83df4, type: 3}
+  m_Script: {fileID: 11500000, guid: 04b00a1247fb01c4e8e35a773af36c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPoint: {fileID: 701589149}
-  endPoint: {fileID: 406536405}
-  speed: 2
+  moveOffset: {x: -8, y: 0, z: 0}
+  speed: 3
 --- !u!1001 &717982856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3723,7 +3711,6 @@ MonoBehaviour:
   yellowTank: {fileID: 189000453}
   spawnGreen: {fileID: 518452962}
   spawnYellow: {fileID: 1748993610}
-  resetPlatform: {fileID: 2120936983}
   tankMatBlue: {fileID: 2100000, guid: 4577ee2046668dc4faae41439ead563c, type: 2}
   tankMatGreen: {fileID: 2100000, guid: 36797ffef13d2934b9df4b1eee1d60ad, type: 2}
 --- !u!114 &1955394397
@@ -4243,11 +4230,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 406536410}
   m_SourcePrefab: {fileID: 100100000, guid: 760bdb18d27c4d04ca85ddf9b6fe9eb2, type: 3}
---- !u!4 &2120936983 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5724509616340560694, guid: 3b88aee75b5676f49b77d52a1f4dd2d3, type: 3}
-  m_PrefabInstance: {fileID: 1184118428}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2147088117
 GameObject:
   m_ObjectHideFlags: 0
