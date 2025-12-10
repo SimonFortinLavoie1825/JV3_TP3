@@ -47,23 +47,28 @@ public class Bullet : MonoBehaviour
 
     void OnHit()
     {
-        Debug.Log("Bullet, TARRRGET HIT: " + betweenFrameHitInfo.collider.name);
-        
+        Debug.Log("Bullet, TARGET HIT: " + betweenFrameHitInfo.collider.name);
+
         if (betweenFrameHitInfo.collider.TryGetComponent<Target>(out Target target))
-        {
             target.OnHit();
-        }
 
         float angle = CalculateCollisionAngle(rb.linearVelocity, betweenFrameHitInfo.normal);
 
-        // Instantiate and play the hit particle effect
         SpawnParticles();
-        
-        if (!betweenFrameHitInfo.collider.gameObject.CompareTag("Player"))
-        {
-            Debug.DrawLine(betweenFrameHitInfo.point - transform.forward * 5, betweenFrameHitInfo.point + transform.forward * 100, Color.white, 5f);
-        }
+
+
+        //if (!betweenFrameHitInfo.collider.CompareTag("Player"))
+        //{
+        //    Debug.DrawLine(
+        //        betweenFrameHitInfo.point - transform.forward * 5,
+        //        betweenFrameHitInfo.point + transform.forward * 100,
+        //        Color.white, 5f
+        //    );
+        //}
+
+        DestroyBullet();
     }
+
 
     public void ShootBullet()
     {
