@@ -24,7 +24,7 @@ public class ShootGun : MonoBehaviour
     {
         currentReload = reloadTime;
 
-        barrelPosition = GameObject.Find("Barrel").transform;
+        barrelPosition = transform.Find("Turret/Barrel");
 
         rb = GetComponent<Rigidbody>();
         shootAction = InputSystem.actions.FindAction("Shoot");
@@ -37,6 +37,7 @@ public class ShootGun : MonoBehaviour
             bulletList[i] = newBullet.GetComponent<Bullet>();
         }
     }
+
 
     // Update is called once per frame
     void FixedUpdate()

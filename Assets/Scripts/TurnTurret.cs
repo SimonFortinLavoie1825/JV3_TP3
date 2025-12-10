@@ -22,13 +22,16 @@ public class TurnTurret : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        targetRotation = GameObject.Find("TargetRotation").transform;
-        turret = GameObject.Find("Turret").transform;
-        barrel = turret.GetChild(0);
+        turret = transform.Find("Turret");
+        barrel = turret.Find("Barrel");
+        targetRotation = transform.Find("TargetRotation");
+
         ignoreMask = LayerMask.GetMask("Player");
         cameraLook = Camera.main;
+
         Cursor.lockState = CursorLockMode.Locked;
     }
+
 
     // Update is called once per frame
     void Update()
