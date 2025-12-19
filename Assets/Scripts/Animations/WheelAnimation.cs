@@ -10,7 +10,7 @@ public class WheelVisualAnimator : MonoBehaviour
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         ChangeWheelPosition();
         ManageWheelParticles();
@@ -40,20 +40,17 @@ public class WheelVisualAnimator : MonoBehaviour
 
     private void ManageWheelParticles()
     {
-        WheelHit wheelHit;
-
         foreach (TankWheel wheel in tankWheels)
         {
-            if (wheel.wheelCollider.GetGroundHit(out wheelHit))
+            if (wheel.wheelCollider.GetGroundHit(out WheelHit wheelHit))
             {
-                if (Mathf.Abs(wheelHit.sidewaysSlip) >= 0.25f)
+                if (Mathf.Abs(wheelHit.sidewaysSlip) >= 0.5f || (Mathf.Abs(wheelHit.forwardSlip) >= 0.975f && Mathf.Abs(wheelHit.forwardSlip) <= 1.0f))
                 {
                     wheel.driftParticles.Play();
-                } else
-                {
-                    wheel.driftParticles.Stop();
-                }
+                    continue;
+                } 
             }
+            wheel.driftParticles.Stop();
         }
     }
 }

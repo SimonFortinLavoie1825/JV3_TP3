@@ -767,10 +767,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3354916977259265989}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2500
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -811,14 +811,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e147390161c2c864094ae34fbd87b8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensivity: 0
   turretRotationSpeed: 0
   gunElevationSpeed: 0
   gunDepression: 0
   gunElevation: 0
-  targetRotation: {fileID: 0}
-  turret: {fileID: 195303505269613692}
-  cameraLook: {fileID: 0}
 --- !u!64 &904381682
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -972,14 +968,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e147390161c2c864094ae34fbd87b8df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensivity: 0
   turretRotationSpeed: 0
   gunElevationSpeed: 0
   gunDepression: 0
   gunElevation: 0
-  targetRotation: {fileID: 0}
-  turret: {fileID: 2115012942}
-  cameraLook: {fileID: 0}
 --- !u!54 &1052641072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -987,10 +979,10 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052641069}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Mass: 2500
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1115,22 +1107,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d05ccfa22030a34c9f6280975dd1ab5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poweredWheels:
-  - {fileID: 606451973}
-  - {fileID: 1577016945}
-  - {fileID: 660594986}
-  - {fileID: 1310115783}
-  steerWheels:
-  - {fileID: 660594986}
-  - {fileID: 1310115783}
-  wheelAnimator: {fileID: 0}
+  tankWheels: []
   brakePower: 100
   speed: 500
   maxSpeed: 50
-  brakeFactor: 5000
   steerAngle: 15
   jumpForce: 5
-  steerSpeed: 5
 --- !u!1 &1054493520
 GameObject:
   m_ObjectHideFlags: 0
