@@ -7,7 +7,9 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private float lifeTime = 10f;
     [SerializeField] private float bulletVelocity = 200f;
-    [SerializeField] private GameObject[] hitParticle;
+    [SerializeField] private GameObject[] hitParticlePrefabs;
+
+    private ParticleSystem[] hitParticle;
 
     private TrailRenderer trail;
     private Ray betweenFrameRay;
@@ -24,6 +26,14 @@ public class Bullet : MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         rb = GetComponent<Rigidbody>();
         ignoreMask = ~LayerMask.GetMask("Player", "Bullet");
+
+        hitParticle = new ParticleSystem[hitParticlePrefabs.Length];
+        for (int i = 0; i < hitParticlePrefabs.Length; i++)
+        {
+            ParticleSystem newParticle = Instantiate(hitParticlePrefabs[i]).GetComponent<ParticleSystem>();
+            newParticle.Stop();
+            hitParticle[i] = newParticle;
+        }
     }
 
     private void FixedUpdate()
@@ -56,16 +66,6 @@ public class Bullet : MonoBehaviour
 
         SpawnParticles();
 
-
-        //if (!betweenFrameHitInfo.collider.CompareTag("Player"))
-        //{
-        //    Debug.DrawLine(
-        //        betweenFrameHitInfo.point - transform.forward * 5,
-        //        betweenFrameHitInfo.point + transform.forward * 100,
-        //        Color.white, 5f
-        //    );
-        //}
-
         DestroyBullet();
     }
 
@@ -89,22 +89,13 @@ public class Bullet : MonoBehaviour
         return Vector3.Angle(vNorm, -nNorm);
     }
 
-    // TODO: switch to a particle pool
     private void SpawnParticles()
     {
-        foreach (GameObject particle in hitParticle)
+        for (int i = 0; i < hitParticle.Length; i++)
         {
-            GameObject hitParticleGO = Instantiate(particle, betweenFrameHitInfo.point, Quaternion.LookRotation(betweenFrameHitInfo.normal));
-            ParticleSystem ps = hitParticleGO.GetComponent<ParticleSystem>();
-            if (ps != null)
-            {
-                ps.Play();
-                Destroy(hitParticleGO, ps.main.duration + ps.main.startLifetime.constantMax);
-            }
-            else
-            {
-                Destroy(hitParticleGO, 2f); // fallback in case no ParticleSystem is found
-            }
+            hitParticle[i].transform.position = betweenFrameHitInfo.point;
+            hitParticle[i].transform.rotation = Quaternion.LookRotation(betweenFrameHitInfo.normal);
+            hitParticle[i].Play();
         }
     }
 

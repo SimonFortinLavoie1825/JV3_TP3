@@ -4,28 +4,10 @@ using UnityEngine;
 public class WheelVisualAnimator : MonoBehaviour
 {
     [SerializeField] private TankWheel[] tankWheels;
-    [SerializeField] private ParticleSystem driftParticles;
-
-    private Dictionary<Transform, WheelCollider> tankWheelsDict;
-    private List<ParticleSystem> driftParticlesList;
 
     private void Start()
     {
-        tankWheelsDict = new Dictionary<Transform, WheelCollider>();
 
-        driftParticlesList = new List<ParticleSystem>();
-        for (int i = 0; i < tankWheels.Length; i++)
-        {
-            ParticleSystem particle = Instantiate(driftParticles, transform);
-            particle.Stop();
-        }
-
-        foreach (TankWheel wheel in tankWheels)
-        {
-            Transform mesh = wheel.transform.GetChild(0);
-            WheelCollider wc = wheel.GetComponent<WheelCollider>();
-            tankWheelsDict.Add(mesh, wc);
-        }
     }
 
     private void Update()
@@ -36,23 +18,20 @@ public class WheelVisualAnimator : MonoBehaviour
 
     private void ChangeWheelPosition()
     {
-        foreach (KeyValuePair<Transform, WheelCollider> kwp in tankWheelsDict)
+        foreach (TankWheel wheel in tankWheels)
         {
-            WheelCollider wheelCollider = kwp.Value;
-            Transform wheelMesh = kwp.Key;
-
-            wheelCollider.GetWorldPose(out Vector3 targetPos, out Quaternion targetQuat);
+            wheel.wheelCollider.GetWorldPose(out Vector3 targetPos, out Quaternion targetQuat);
 
             float lerpSpeed = 15f;
 
-            wheelMesh.position = Vector3.Lerp(
-                wheelMesh.position,
+            wheel.wheelMesh.position = Vector3.Lerp(
+                wheel.wheelMesh.position,
                 targetPos,
                 Time.deltaTime * lerpSpeed
             );
 
-            wheelMesh.rotation = Quaternion.Slerp(
-                wheelMesh.rotation,
+            wheel.wheelMesh.rotation = Quaternion.Slerp(
+                wheel.wheelMesh.rotation,
                 targetQuat,
                 Time.deltaTime * lerpSpeed
             );
@@ -63,16 +42,16 @@ public class WheelVisualAnimator : MonoBehaviour
     {
         WheelHit wheelHit;
 
-        foreach (KeyValuePair<Transform, WheelCollider> kwp in tankWheelsDict)
+        foreach (TankWheel wheel in tankWheels)
         {
-            WheelCollider wheelCollider = kwp.Value;
-            if (wheelCollider.GetGroundHit(out wheelHit))
+            if (wheel.wheelCollider.GetGroundHit(out wheelHit))
             {
                 if (Mathf.Abs(wheelHit.sidewaysSlip) >= 0.25f)
                 {
-                    driftParticles.Play();
+                    wheel.driftParticles.Play();
                 } else
                 {
+                    wheel.driftParticles.Stop();
                 }
             }
         }

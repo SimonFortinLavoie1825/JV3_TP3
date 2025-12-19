@@ -2,9 +2,17 @@ using UnityEngine;
 
 public class TankWheel : MonoBehaviour
 {
-    [SerializeField] private float steerMult = 0;
-    
-    public float getSteerMult() {
-        return steerMult;
+    public float steerMult = 0;
+    public ParticleSystem driftParticles;
+    public Transform wheelMesh;
+    public WheelCollider wheelCollider;
+
+    private void Awake()
+    {
+        wheelCollider = GetComponent<WheelCollider>();
+        wheelMesh = transform.GetChild(0);
+        
+        driftParticles = Instantiate(driftParticles, transform);
+        driftParticles.Stop();
     }
 }

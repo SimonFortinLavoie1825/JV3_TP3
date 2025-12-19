@@ -214,5 +214,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeTime: 5
-  bulletVelocity: 125
+  bulletVelocity: 200
   hitParticle: []

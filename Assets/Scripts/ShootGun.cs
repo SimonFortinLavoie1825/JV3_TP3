@@ -12,6 +12,8 @@ public class ShootGun : MonoBehaviour
     private Transform barrelPosition;
 
     private Bullet[] bulletList;
+    private ParticleSystem[][] gunParticlesList;
+
     private Rigidbody rb;
     private int bulletListSize = 10;
     private float currentReload;
@@ -36,6 +38,18 @@ public class ShootGun : MonoBehaviour
             newBullet.SetActive(false);
             bulletList[i] = newBullet.GetComponent<Bullet>();
         }
+
+        gunParticlesList = new ParticleSystem[gunParticlePrefabs.Length][];
+        for (int i = 0; i < gunParticlePrefabs.Length; i++)
+        {
+            gunParticlesList[i] = new ParticleSystem[bulletListSize];
+            for (int i2 = 0; i2 < bulletListSize; i2++)
+            {
+                ParticleSystem newParticle = Instantiate(gunParticlePrefabs[i]).GetComponent<ParticleSystem>();
+                newParticle.Stop();
+                gunParticlesList[i][i2] = newParticle;
+            }
+        }
     }
 
 
@@ -59,19 +73,11 @@ public class ShootGun : MonoBehaviour
             newBullet.ShootBullet();
 
             // Instantiate and play each particle effect, then destroy after it finishes
-            foreach (GameObject particlePrefab in gunParticlePrefabs)
+            for (int i = 0; i < gunParticlePrefabs.Length; i++)
             {
-                GameObject particleGO = Instantiate(particlePrefab, barrelPosition.position, barrelPosition.rotation);
-                ParticleSystem ps = particleGO.GetComponent<ParticleSystem>();
-                if (ps != null)
-                {
-                    ps.Play();
-                    Destroy(particleGO, ps.main.duration + ps.main.startLifetime.constantMax);
-                }
-                else
-                {
-                    Destroy(particleGO, 2f); // fallback if no ParticleSystem found
-                }
+                ParticleSystem ps = getAvailableGunParticle(i);
+                ps.transform.SetPositionAndRotation(barrelPosition.position, barrelPosition.rotation);
+                ps.Play();
             }
 
             //Move tank back
@@ -88,6 +94,18 @@ public class ShootGun : MonoBehaviour
                 bulletList[i].gameObject.SetActive(true);
                 bulletList[i].ResetBullet(barrelPosition, rb.linearVelocity);
                 return bulletList[i];
+            }
+        }
+        return null;
+    }
+
+    private ParticleSystem getAvailableGunParticle(int index)
+    {
+        for (int i = 0; i < bulletListSize; i++)
+        {
+            if (!gunParticlesList[index][i].isPlaying)
+            {
+                return gunParticlesList[index][i];
             }
         }
         return null;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,8 +11,6 @@ public class TankControls : MonoBehaviour
     [SerializeField] private float maxSpeed = 50;
     [SerializeField] private float steerAngle = 15;
     [SerializeField] private float jumpForce = 5;
-
-    private Dictionary<TankWheel, WheelCollider> tankWheelsDict;
 
     private Rigidbody rb;
 
@@ -32,16 +31,7 @@ public class TankControls : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
 
-        tankWheelsDict = new Dictionary<TankWheel, WheelCollider>();
-        foreach (TankWheel wheel in tankWheels)
-        {
-            WheelCollider wc = wheel.GetComponent<WheelCollider>();
-            tankWheelsDict.Add(wheel, wc);
-        }
-
-
-        tankWheelsDict.TryGetValue(tankWheels[0], out WheelCollider baseWheel);
-        baseSuspensionDistance = baseWheel.suspensionDistance;
+        baseSuspensionDistance = tankWheels[0].wheelCollider.suspensionDistance;
     }
 
     private void FixedUpdate()
@@ -61,17 +51,15 @@ public class TankControls : MonoBehaviour
         Steer();
 
         
-        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+        foreach (TankWheel wheel in tankWheels)
         {
-            WheelCollider wheel = kwp.Value;
-
             if (jumpValue == 1)
             {
-                wheel.suspensionDistance = baseSuspensionDistance * jumpForce;
+                wheel.wheelCollider.suspensionDistance = baseSuspensionDistance * jumpForce;
             }
             else
             {
-                wheel.suspensionDistance = baseSuspensionDistance;
+                wheel.wheelCollider.suspensionDistance = baseSuspensionDistance;
             }
         }
         
@@ -79,11 +67,10 @@ public class TankControls : MonoBehaviour
 
     private void SlowDown()
     {
-        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+        foreach (TankWheel wheel in tankWheels)
         {
-            WheelCollider wheel = kwp.Value;
-            wheel.motorTorque = 0;
-            wheel.brakeTorque = brakePower / 2.5f;
+            wheel.wheelCollider.motorTorque = 0;
+            wheel.wheelCollider.brakeTorque = brakePower / 2.5f;
         }
     }
 
@@ -91,31 +78,26 @@ public class TankControls : MonoBehaviour
     {
         if (Mathf.Sign(currentSpeed) == Mathf.Sign(moveValue.y) || (-1 < currentSpeed && currentSpeed < 1))
         {
-            foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+            foreach (TankWheel wheel in tankWheels)
             {
-                WheelCollider wheel = kwp.Value;
-
-                wheel.brakeTorque = 0;
-                wheel.motorTorque = CalculateSpeed();
+                wheel.wheelCollider.brakeTorque = 0;
+                wheel.wheelCollider.motorTorque = CalculateSpeed();
             }
         } else
         {
-            foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict)
+            foreach(TankWheel wheel in tankWheels)
             {
-                WheelCollider wheel = kwp.Value;
-                wheel.motorTorque = 0;
-                wheel.brakeTorque = brakePower;
+                wheel.wheelCollider.motorTorque = 0;
+                wheel.wheelCollider.brakeTorque = brakePower;
             }
         }
     }
 
     private void Steer()
     {
-        foreach (KeyValuePair<TankWheel, WheelCollider> kwp in tankWheelsDict) { 
-            WheelCollider wheelCollider = kwp.Value;
-            TankWheel wheel = kwp.Key;
-
-            wheelCollider.steerAngle = Mathf.MoveTowards(wheelCollider.steerAngle, moveValue.x * steerAngle * wheel.getSteerMult(), 10);
+        foreach (TankWheel wheel in tankWheels)
+        {
+            wheel.wheelCollider.steerAngle = Mathf.MoveTowards(wheel.wheelCollider.steerAngle, moveValue.x * steerAngle * wheel.steerMult, 10);
         }
     }
 
