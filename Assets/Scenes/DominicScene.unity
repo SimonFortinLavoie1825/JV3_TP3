@@ -291,6 +291,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 1
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!146 &17933834
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -1107,6 +1110,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 0
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!146 &170242908
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -1281,7 +1287,6 @@ MonoBehaviour:
   - {fileID: 1943289573}
   - {fileID: 1811293006}
   - {fileID: 17933833}
-  driftParticles: {fileID: 5969289657926256698, guid: d3058ae5529bad64484b47856fcef71d, type: 3}
 --- !u!114 &189000455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2046,7 +2051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalScale.x
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalScale.z
@@ -2054,7 +2059,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 134.82
+      value: 136.26
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalPosition.y
@@ -5409,7 +5414,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalScale.x
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalScale.z
@@ -5425,7 +5430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.41
+      value: -1.92
       objectReference: {fileID: 0}
     - target: {fileID: 4754036455656874231, guid: 20c69e79a3d28764fbb6f459c5618007, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6854,6 +6859,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 1
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!146 &1811293007
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -7333,6 +7341,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 0
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!146 &1943289574
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -7765,7 +7776,7 @@ Transform:
   m_GameObject: {fileID: 1958997510}
   serializedVersion: 2
   m_LocalRotation: {x: -0.018763386, y: 0.000019862973, z: 0.000000372748, w: 0.999824}
-  m_LocalPosition: {x: 134.6889, y: 44.549957, z: -274.5045}
+  m_LocalPosition: {x: -59.011105, y: 4.8499565, z: -51.504486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7785,7 +7796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CollideAgainst:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 449
   IgnoreTag: Player
   TransparentLayers:
     serializedVersion: 2
@@ -8379,7 +8390,7 @@ Transform:
   m_GameObject: {fileID: 8399098183881441065}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0034340927, y: -0.7080826, z: 0.0032585377, w: 0.70611376}
-  m_LocalPosition: {x: 134.6, y: 41.8, z: -254.5}
+  m_LocalPosition: {x: -59.1, y: 2.1, z: -31.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8416,7 +8427,7 @@ Transform:
   m_GameObject: {fileID: 3701081532853829689}
   serializedVersion: 2
   m_LocalRotation: {x: -0.018763386, y: 0.000019862973, z: 0.0000003727623, w: 0.999824}
-  m_LocalPosition: {x: 134.6889, y: 44.549957, z: -274.5045}
+  m_LocalPosition: {x: -59.011105, y: 4.8499565, z: -51.504486}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8992,6 +9003,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 0
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!54 &7123211948938318632
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9071,6 +9085,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 0
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!1 &8011974773467981784
 GameObject:
   m_ObjectHideFlags: 0
@@ -9136,6 +9153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 1
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!1 &8399098183881441065
 GameObject:
   m_ObjectHideFlags: 0
@@ -9195,7 +9215,6 @@ MonoBehaviour:
   - {fileID: 7575284173530286202}
   - {fileID: 9216219495485931720}
   - {fileID: 8189943952556651923}
-  driftParticles: {fileID: 5969289657926256698, guid: d3058ae5529bad64484b47856fcef71d, type: 3}
 --- !u!146 &8723432414107670012
 WheelCollider:
   m_ObjectHideFlags: 0
@@ -9264,6 +9283,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steerMult: 1
+  driftParticles: {fileID: 0}
+  wheelMesh: {fileID: 0}
+  wheelCollider: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
