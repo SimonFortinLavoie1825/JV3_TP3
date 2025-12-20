@@ -33,25 +33,63 @@ public class TankManager : MonoBehaviour
         Instance = this;
 
         yellowTank.SetActive(false);
-
         activeTank = greenTank;
 
         switchLeft = InputSystem.actions.FindAction("SwitchLeft");
         switchRight = InputSystem.actions.FindAction("SwitchRight");
 
+        switchLeft?.Disable();
+        switchRight?.Disable();
+
         SetTankScriptsEnabled(greenTank, true);
         SetTankScriptsEnabled(yellowTank, false);
+
+        SetCameraTarget(greenTank);
     }
 
     private void Update()
     {
         if (!yellowActive) return;
 
-        if (switchLeft.WasPerformedThisFrame())
+        if (switchLeft != null && switchLeft.WasPerformedThisFrame())
             SetActiveTank(greenTank);
 
-        if (switchRight.WasPerformedThisFrame())
+        if (switchRight != null && switchRight.WasPerformedThisFrame())
             SetActiveTank(yellowTank);
+    }
+
+    public void DuplicateTank()
+    {
+        if (yellowActive) return;
+
+        yellowActive = true;
+
+        switchLeft?.Enable();
+        switchRight?.Enable();
+
+        SpawnTankSafely(greenTank, spawnGreen);
+        yellowTank.SetActive(true);
+        SpawnTankSafely(yellowTank, spawnYellow);
+
+        ApplyMaterialToTank(greenTank, tankMatBlue);
+
+        SetActiveTank(greenTank);
+    }
+
+    public void ReturnToSingleTank()
+    {
+        yellowActive = false;
+        switchLeft?.Disable();
+        switchRight?.Disable();
+
+        yellowTank.SetActive(false);
+        SetTankScriptsEnabled(yellowTank, false);
+
+        ApplyMaterialToTank(greenTank, tankMatGreen);
+        SetTankScriptsEnabled(greenTank, true);
+
+        activeTank = greenTank;
+        SetCameraTarget(greenTank);
     }
 
     private void SetActiveTank(GameObject newTank)
@@ -63,35 +101,6 @@ public class TankManager : MonoBehaviour
         SetCameraTarget(newTank);
 
         activeTank = newTank;
-    }
-
-    public void DuplicateTank()
-    {
-        if (yellowActive) return;
-
-        yellowActive = true;
-
-        SpawnTankSafely(greenTank, spawnGreen);
-        yellowTank.SetActive(true);
-        SpawnTankSafely(yellowTank, spawnYellow);
-        ApplyMaterialToTank(greenTank, tankMatBlue);
-
-        SetActiveTank(greenTank);
-    }
-
-
-    public void ReturnToSingleTank()
-    {
-        yellowTank.SetActive(false);
-        SetTankScriptsEnabled(yellowTank, false);
-
-        yellowActive = false;
-
-        ApplyMaterialToTank(greenTank, tankMatGreen);
-        SetTankScriptsEnabled(greenTank, true);
-        SetCameraTarget(greenTank);
-
-        activeTank = greenTank;
     }
 
     private void SpawnTankSafely(GameObject tank, Transform spawnPoint)
