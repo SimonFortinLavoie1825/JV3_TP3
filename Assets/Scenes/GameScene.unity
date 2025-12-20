@@ -6735,13 +6735,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855baea031f73c84a8457fc0fe82f4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freeLookCam: {fileID: 0}
-  greenTank: {fileID: 0}
-  yellowTank: {fileID: 0}
+  freeLookCam: {fileID: 1280161836}
+  greenTank: {fileID: 1923132731}
+  yellowTank: {fileID: 1078133453}
   spawnGreen: {fileID: 863828053}
   spawnYellow: {fileID: 1226861028}
   tankMatBlue: {fileID: 2100000, guid: 4577ee2046668dc4faae41439ead563c, type: 2}
-  tankMatGreen: {fileID: 2100000, guid: 546738ce5c5f3484bb590ed3d3f696ee, type: 2}
+  tankMatGreen: {fileID: 2100000, guid: 36797ffef13d2934b9df4b1eee1d60ad, type: 2}
 --- !u!1001 &1019264175
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9510,7 +9510,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1472205582756169206, guid: 760bdb18d27c4d04ca85ddf9b6fe9eb2, type: 3}
       propertyPath: m_Name
-      value: spawn
+      value: spawnTanks
       objectReference: {fileID: 0}
     - target: {fileID: 2244344583518887756, guid: 760bdb18d27c4d04ca85ddf9b6fe9eb2, type: 3}
       propertyPath: m_LocalScale.x
@@ -9629,9 +9629,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855baea031f73c84a8457fc0fe82f4ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  freeLookCam: {fileID: 0}
-  greenTank: {fileID: 0}
-  yellowTank: {fileID: 0}
+  freeLookCam: {fileID: 1280161836}
+  greenTank: {fileID: 1923132731}
+  yellowTank: {fileID: 1078133453}
   spawnGreen: {fileID: 863828053}
   spawnYellow: {fileID: 1226861028}
   tankMatBlue: {fileID: 2100000, guid: 4577ee2046668dc4faae41439ead563c, type: 2}
